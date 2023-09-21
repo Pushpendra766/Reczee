@@ -3,11 +3,6 @@ import { useDropzone } from "react-dropzone";
 
 function DropZone({ setFiles }) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-  // const files = acceptedFiles.map((file) => (
-  //   <li key={file.path}>
-  //     {file.path} - {file.size} bytes
-  //   </li>
-  // ));
 
   useEffect(() => {
     console.log(acceptedFiles[0]);
@@ -24,10 +19,6 @@ function DropZone({ setFiles }) {
         <p>Drop Your Files Here</p>
         <p>or Click to Upload</p>
       </div>
-      {/* <aside>
-        <h4>Files</h4>
-        <ul>{files}</ul>
-      </aside> */}
     </section>
   );
 }

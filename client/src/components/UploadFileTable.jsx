@@ -8,7 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, Typography } from "@mui/material";
-import axios from "axios";import toast, { toastConfig } from "react-simple-toasts";
+import axios from "axios";
+import toast, { toastConfig } from "react-simple-toasts";
 import "react-simple-toasts/dist/theme/dark.css";
 
 toastConfig({ theme: "dark" });
@@ -35,14 +36,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function UploadFileTable({ files, setFiles, setUploadedFiles }) {
   const handleUpload = (file) => {
-    console.log(file);
-
     const formData = new FormData();
+    const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024;
+    const apiEndpoint = "http://localhost:4000/upload";
+
     formData.append("user_file", file);
-    if (file.size < 2 * 1024 * 1024) {
+    
+    if (file.size < MAX_FILE_SIZE_BYTES) {
       axios({
         method: "POST",
-        url: "http://localhost:4000/upload",
+        url: apiEndpoint,
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",

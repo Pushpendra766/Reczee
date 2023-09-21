@@ -32,16 +32,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function SavedFileTable({ files }) {
+  const apiEndpoint = "http://localhost:4000/download";
+
   function handleDownload(file) {
     axios({
       method: "get",
-      url: "http://localhost:4000/download",
+      url: apiEndpoint,
       responseType: "blob",
       params: {
         fileName: file.name,
       },
     }).then((response) => {
-      console.log(response);
       FileDownload(response.data, file.name);
     });
   }

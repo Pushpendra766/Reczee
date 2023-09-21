@@ -7,7 +7,6 @@ import { useState } from "react";
 function App() {
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  // console.log(files);
   return (
     <Paper
       elevation={6}

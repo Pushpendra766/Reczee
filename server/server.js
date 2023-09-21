@@ -1,23 +1,25 @@
 const express = require("express");
-const app = express();
 const multer = require("multer");
 const cors = require("cors");
 
-app.use(cors());
+const app = express();
+const PORT = process.env.PORT || 4000;
+const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024;
 
-//middleware
+// Middleware
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "./uploads");
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-    },
-  }),
+  storage,
   limits: {
-    fileSize: 2 * 1024 * 1024,
+    fileSize: MAX_FILE_SIZE_BYTES,
   },
 }).single("user_file");
 
@@ -33,16 +35,23 @@ function handleFileUpload(req, res, next) {
   });
 }
 
-//routes
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("An error occurred while processing the request.");
+});
 
+app.use(cors());
+
+// Routes
 app.post("/upload", handleFileUpload, (req, res) => {
   res.send("File upload");
 });
 
 app.get("/download", (req, res) => {
-  res.download("./uploads/" + req.query.fileName);
+  res.download(`./uploads/${req.query.fileName}`);
 });
 
-app.listen(4000, () => {
-  console.log("Listening on port 4000");
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });
