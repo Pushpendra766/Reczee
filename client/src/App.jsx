@@ -18,7 +18,10 @@ function App() {
         setFiles={setFiles}
         setUploadedFiles={setUploadedFiles}
       />
-      <SavedFileTable files={uploadedFiles} />
+      <SavedFileTable
+        files={uploadedFiles}
+        setUploadedFiles={setUploadedFiles}
+      />
     </Paper>
   );
 }

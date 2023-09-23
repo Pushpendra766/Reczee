@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import { Button, Typography } from "@mui/material";
 import axios from "axios";
 import FileDownload from "js-file-download";
+import { useEffect } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,7 +32,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function SavedFileTable({ files }) {
+export default function SavedFileTable({ files, setUploadedFiles }) {
   const apiEndpoint = "http://localhost:4000/download";
 
   function handleDownload(file) {
@@ -46,6 +47,13 @@ export default function SavedFileTable({ files }) {
       FileDownload(response.data, file.name);
     });
   }
+
+  useEffect(() => {
+    axios.get("http://localhost:4000/api/files/metadata").then((response) => {
+      console.log(response.data);
+      setUploadedFiles(response.data);
+    });
+  }, []);
 
   return (
     <div>
